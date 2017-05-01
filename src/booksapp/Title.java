@@ -78,6 +78,6 @@ public class Title {
     @Override
     public String toString() {
         // String for dropdown
-        return title + ", " + copyright + ", " + isbn;
+        return title;
     }
 }

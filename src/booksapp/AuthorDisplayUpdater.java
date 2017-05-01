@@ -5,6 +5,7 @@
  */
 package booksapp;
 
+import java.util.List;
 import javax.swing.JTextArea;
 
 /**
@@ -22,6 +23,11 @@ public class AuthorDisplayUpdater {
     }
     
     public void updateAuthors(Title title) {
-        throw new RuntimeException("Make me work");
+        List<Author> authors = databaseService.getAuthorsByTitle(title);
+        String text = "";
+        for (Author author : authors) {
+            text += author.getLastName() + ", " + author.getFirstName() + "\n";
+        }
+        display.setText(text);
     }
 }

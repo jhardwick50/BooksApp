@@ -25,15 +25,17 @@ public class DatabaseQueryTool extends JFrame{
     
    private JTextArea display;
    private JComboBox authorListCombo;
+   private JComboBox titleListCombo;
    private JTextArea query;
    private JButton submit;
    private DatabaseService ds = new DatabaseService();
    
    private TitleDisplayUpdater titleUpdater;
+   private AuthorDisplayUpdater authorUpdater;
     
     public DatabaseQueryTool(){
         
-        this.setLayout(new GridLayout(4, 1));
+        this.setLayout(new GridLayout(5, 1));
         display = new JTextArea();
         display.setSize(500,100);
         
@@ -41,7 +43,7 @@ public class DatabaseQueryTool extends JFrame{
         this.add(scrollPane);
         
         this.titleUpdater = new TitleDisplayUpdater(ds, display);
-        
+        this.authorUpdater = new AuthorDisplayUpdater(ds, display);
         authorListCombo = new JComboBox();
         
         populateAuthorList();
@@ -50,6 +52,16 @@ public class DatabaseQueryTool extends JFrame{
         authorListCombo.setSize(500, 20);
         authorListCombo.addActionListener(new AuthorComboBoxListener(titleUpdater));
         this.add(authorListCombo);
+        
+        
+        titleListCombo = new JComboBox();
+        
+        populateTitleList();
+        
+        titleListCombo.setSize(500, 20);
+        titleListCombo.addActionListener(new TitleComboBoxListener(authorUpdater));
+        this.add(titleListCombo);
+        
         
         query = new JTextArea();
         query.setSize(500, 20);
@@ -83,6 +95,12 @@ public class DatabaseQueryTool extends JFrame{
     }
     
     private void populateTitleList() {
-        // TODO make me work but don't also update the display since 
+        // TODO make me work but don't also update the display since
+        List<Title> titles = ds.getTitles();
+        
+        // for each title
+        for (int j = 0; j < titles.size(); j++){
+            titleListCombo.addItem(titles.get(j));
+    }
     }
 }
