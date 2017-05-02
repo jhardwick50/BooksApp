@@ -16,12 +16,21 @@ public class AuthorDisplayUpdater {
     
     private DatabaseService databaseService;
     private JTextArea display;
-    
+    /**
+     * Update display screen
+     * @param databaseService
+     * @param display 
+     */
     public AuthorDisplayUpdater(DatabaseService databaseService, JTextArea display) {
         this.databaseService = databaseService;
         this.display = display;
     }
     
+    /**
+     * Update the display with author information based on the title.
+     * 
+     * @param title The title
+     */
     public void updateAuthors(Title title) {
         List<Author> authors = databaseService.getAuthorsByTitle(title);
         String text = "";

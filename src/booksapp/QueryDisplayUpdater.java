@@ -12,24 +12,20 @@ import javax.swing.JTextArea;
  *
  * @author Jason
  */
-public class TitleDisplayUpdater {
-    
+public class QueryDisplayUpdater {
     private DatabaseService databaseService;
     private JTextArea display;
     
-    public TitleDisplayUpdater(DatabaseService databaseService, JTextArea display) {
+    public QueryDisplayUpdater(DatabaseService databaseService, JTextArea display) {
         this.databaseService = databaseService;
         this.display = display;
-    }
-    /**
-     * Updates title information to the display by author.
-     * @param author 
-     */
-    public void updateTitles(Author author) {
-        List<Title> titles = databaseService.getTitlesByAuthor(author);
+}
+    public void updateQueryResults(String query) {
+        // Execute query on databse service
+        List<String> queryResults = databaseService.runQuery(query);
         String text = "";
-        for (Title title : titles) {
-            text += title.getTitle() + ", " + title.getCopyright() + ", " + title.getIsbn() + "\n";
+        for (String result : queryResults) {
+            text += result + "\n";
         }
         display.setText(text);
     }

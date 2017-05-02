@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,12 @@ public class DatabaseService {
         return results;
     }
     
+    /**
+     * Get all authors by a given title.
+     * 
+     * @param title The title to search by
+     * @return The list of titles
+     */
     public List<Author> getAuthorsByTitle(Title title) {
        PreparedStatement selectAuthors;
         ResultSet resultSet = null;
@@ -88,7 +95,10 @@ public class DatabaseService {
         
         return results;
     }
-    
+    /**
+     * Create the list of all titles for the combo box.
+     * @return all titles
+     */
     public List<Title> getTitles() {
         PreparedStatement selectTitles;
         ResultSet resultSet = null;
@@ -112,7 +122,11 @@ public class DatabaseService {
         }
         return results;
     }
-    
+    /**
+     * Get a list of titles by the author selected.
+     * @param author
+     * @return titles by a chosen author.
+     */
     public List<Title> getTitlesByAuthor(Author author) {
         
         PreparedStatement selectTitles;
@@ -145,7 +159,41 @@ public class DatabaseService {
         
         return results;
     }
+    /**
+     * queries the database and displays info.
+     * @param query
+     * @return rows based on query provided.
+     */
     
-   
-    
+   public List<String> runQuery(String query) {
+        PreparedStatement statement;
+        ResultSet resultSet = null;
+        List< String > results = new ArrayList<>();
+        try{
+            statement = connection.prepareStatement(query);
+            
+            resultSet = statement.executeQuery();
+           
+            while (resultSet.next()){
+                String rowString = "";
+                
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                int numberOfColumns = rsmd.getColumnCount();
+                for (int i = 1; i <= numberOfColumns; i++) {
+                    rowString += resultSet.getString(i);
+                    if (i < numberOfColumns) {
+                        rowString += ", ";
+                    }
+                }
+
+                // Add row string to results list
+                results.add(rowString);
+            }
+        }
+        catch(SQLException sqlException){
+            sqlException.printStackTrace();  
+        }
+        
+        return results;
+   }
 }
